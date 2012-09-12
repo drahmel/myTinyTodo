@@ -67,7 +67,7 @@ if($needAuth && !isset($dontStartSession))
 function use_mobile()
 {
 	if(!defined("MTT_TEMPLATE_VAR")) {
-		require_once(MTTPATH . "MobileDetect.php");
+		require_once(MTTPATH . "Mobile_Detect.php");
 		$detect = new Mobile_Detect();
 		if($detect->isMobile()) {
 			//TODO: Add support for tablets?
