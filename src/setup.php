@@ -45,8 +45,8 @@ else
 }
 
 $lastVer = '1.4';
-echo '<html><head><meta name="robots" content="noindex,nofollow"><title>myTinyTodo @VERSION Setup</title></head><body>'; 
-echo "<big><b>myTinyTodo @VERSION Setup</b></big><br><br>";
+echo '<html><head><meta name="robots" content="noindex,nofollow"><title>myTinyTodo '.Config::get('version').' Setup</title></head><body>';
+echo "<big><b>myTinyTodo ".Config::get('version')." Setup</b></big><br><br>";
 
 # determine current installed version
 $ver = get_ver($db, $dbtype);

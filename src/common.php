@@ -56,7 +56,7 @@ function _get($param,$defvalue = '')
 	else {
 		return $_GET[$param];
 	}
-} 
+}
 
 class Config
 {
@@ -82,8 +82,10 @@ class Config
 		'dateformat' => array('default'=>'j M Y', 'type'=>'s'),
 		'dateformat2' => array('default'=>'n/j/y', 'type'=>'s'),
 		'dateformatshort' => array('default'=>'j M', 'type'=>'s'),
+		'mobiletemplate' => array('default'=>'mobile', 'type'=>'s'),
 		'template' => array('default'=>'default', 'type'=>'s'),
 		'showdate' => array('default'=>0, 'type'=>'i'),
+		'version' => array('default'=>'v1.5.0', 'type'=>'s'),
 	);
 
 	public static $config;

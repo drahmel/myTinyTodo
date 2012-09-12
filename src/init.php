@@ -45,6 +45,7 @@ require_once(MTTPATH. 'lang/'.Config::get('lang').'.php');
 
 $_mttinfo = array();
 
+
 $needAuth = (Config::get('password') != '') ? 1 : 0;
 if($needAuth && !isset($dontStartSession))
 {
@@ -61,6 +62,20 @@ if($needAuth && !isset($dontStartSession))
 	session_set_cookie_params(1209600, url_dir(Config::get('url')=='' ? $_SERVER['REQUEST_URI'] : Config::get('url'))); # 14 days session cookie lifetime
 	session_name('mtt-session');
 	session_start();
+}
+
+function use_mobile()
+{
+	if(!defined("MTT_TEMPLATE_VAR")) {
+		require_once(MTTPATH . "MobileDetect.php");
+		$detect = new Mobile_Detect();
+		if($detect->isMobile()) {
+			//TODO: Add support for tablets?
+			define("MTT_TEMPLATE_VAR", 'mobiletemplate');
+		} else {
+			define("MTT_TEMPLATE_VAR", 'template');
+		}
+	}
 }
 
 function is_logged()
@@ -125,10 +140,11 @@ function get_mttinfo($v)
 {
 	global $_mttinfo;
 	if(isset($_mttinfo[$v])) return $_mttinfo[$v];
+	use_mobile();
 	switch($v)
 	{
 		case 'template_url':
-			$_mttinfo['template_url'] = get_mttinfo('mtt_url'). 'themes/'. Config::get('template') . '/';
+			$_mttinfo['template_url'] = get_mttinfo('mtt_url'). 'themes/'. Config::get(MTT_TEMPLATE_VAR) . '/';
 			return $_mttinfo['template_url'];
 		case 'url':
 			$_mttinfo['url'] = Config::get('url');

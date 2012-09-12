@@ -4,52 +4,36 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php mttinfo('title'); ?></title>
-<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>style.css?v=@VERSION" media="all" />
+<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>style.css?v=<?php echo Config::get('version'); ?>" media="all" />
 <?php if(Config::get('rtl')): ?>
-<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>style_rtl.css?v=@VERSION" media="all" />
+<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>style_rtl.css?=<?php echo Config::get('version'); ?>" media="all" />
 <?php endif; ?>
-<?php if(isset($_GET['pda'])): ?>
-<meta name="viewport" id="viewport" content="width=device-width" />
-<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>pda.css?v=@VERSION" media="all" />
-<?php else: ?>
-<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>print.css?v=@VERSION" media="print" />
-<?php endif; ?>
+<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>print.css?v=<?php echo Config::get('version'); ?>" media="print" />
 </head>
 
 <body>
 
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>jquery/jquery-1.4.4.min.js"></script>
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>jquery/jquery-ui-1.8.7.custom.min.js"></script>
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>jquery/jquery.autocomplete-1.1.js"></script>
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo.js?v=@VERSION"></script>
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo_lang.php?v=@VERSION"></script>
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo_ajax_storage.js?v=@VERSION"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery.autocomplete-1.1.js"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/mytinytodo.js?v=<?php echo Config::get('version'); ?>"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/mytinytodo_lang.php?v=<?php echo Config::get('version'); ?>"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/mytinytodo_ajax_storage.js?v=<?php echo Config::get('version'); ?>"></script>
 
 <script type="text/javascript">
 $().ready(function(){
-
-	<?php if(isset($_GET['pda'])): ?>
-
-	$('body').width(screen.width);
-	$(window).resize(function() {
-		$('body').width(screen.width);
-	});
-		
-	<?php endif; ?>
-
 	mytinytodo.mttUrl = "<?php mttinfo('mtt_url'); ?>";
 	mytinytodo.templateUrl = "<?php mttinfo('template_url'); ?>";
 	mytinytodo.db = new mytinytodoStorageAjax(mytinytodo);
 	mytinytodo.init({
 		needAuth: <?php echo $needAuth ? "true" : "false"; ?>,
 		isLogged: <?php echo ($needAuth && is_logged()) ? "true" : "false"; ?>,
-		showdate: <?php echo (Config::get('showdate') && !isset($_GET['pda'])) ? "true" : "false"; ?>,
-		singletab: <?php echo (isset($_GET['singletab']) || isset($_GET['pda'])) ? "true" : "false"; ?>,
+		showdate: <?php echo (Config::get('showdate')) ? "true" : "false"; ?>,
+		singletab: <?php echo (isset($_GET['singletab'])) ? "true" : "false"; ?>,
 		duedatepickerformat: "<?php echo htmlspecialchars(Config::get('dateformat2')); ?>",
 		firstdayofweek: <?php echo (int) Config::get('firstdayofweek'); ?>,
 		autotag: <?php echo Config::get('autotag') ? "true" : "false"; ?>
 		<?php if(isset($_GET['list'])) echo ",openList: ". (int)$_GET['list']; ?>
-		<?php if(isset($_GET['pda'])) echo ", touchDevice: true"; ?>
 	}).loadLists(1);
 });
 </script>
@@ -281,7 +265,7 @@ $().ready(function(){
 <div id="space"></div>
 </div>
 
-<div id="footer"><div id="footer_content">Powered by <strong><a href="http://www.mytinytodo.net/">myTinyTodo</a></strong> @VERSION </div></div>
+<div id="footer"><div id="footer_content">Powered by <strong><a href="http://www.mytinytodo.net/">myTinyTodo</a></strong> <?php echo Config::get('version'); ?> </div></div>
 
 </div>
 </body>
