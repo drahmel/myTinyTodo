@@ -12,7 +12,7 @@
 </head>
 
 <body>
-
+<link href="<?php mttinfo('template_url'); ?>/images/logo32x32.png" rel="shortcut icon apple-touch-icon" />
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery-ui-1.8.7.custom.min.js"></script>
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery.autocomplete-1.1.js"></script>
