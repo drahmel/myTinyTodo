@@ -4,7 +4,7 @@
 	This file is part of myTinyTodo.
 	(C) Copyright 2009-2010 Max Pozdeev <maxpozdeev@gmail.com>
 	Licensed under the GNU GPL v3 license. See file COPYRIGHT for details.
-*/ 
+*/
 
 set_error_handler('myErrorHandler');
 set_exception_handler('myExceptionHandler');
@@ -40,7 +40,7 @@ elseif(isset($_GET['loadTasks']))
 	}
 	else $sqlWhere .= " AND {$db->prefix}todolist.list_id=". $listId;
 	if(_get('compl') == 0) $sqlWhere .= ' AND compl=0';
-	
+
 	$tag = trim(_get('t'));
 	if($tag != '')
 	{
@@ -66,7 +66,7 @@ elseif(isset($_GET['loadTasks']))
 			$inner .= "INNER JOIN {$db->prefix}tag2task ON id=task_id";
 			$sqlWhere .= " AND tag_id = ". $tagIds[0];
 		}
-		
+
 		if($tagExIds) {
 			$sqlWhere .= " AND id NOT IN (SELECT DISTINCT task_id FROM {$db->prefix}tag2task WHERE list_id=$listId AND tag_id IN (".
 						implode(',',$tagExIds). "))"; //DISTINCT ?
@@ -114,13 +114,23 @@ elseif(isset($_GET['newTask']))
 	$tags = '';
 	if(Config::get('smartsyntax') != 0)
 	{
-		$a = parse_smartsyntax($title);
-		if($a === false) {
-			jsonExit($t);
+		if(Config::get('smartsyntax') == 1) {
+			$a = parse_smartsyntax($title);
+			if($a === false) {
+				jsonExit($t);
+			}
+			$title = $a['title'];
+			$prio = $a['prio'];
+			$tags = $a['tags'];
+		}else {
+			$a = parse_smartsyntax_alternativ($title);
+			if($a === false) {
+				jsonExit($t);
+			}
+			$title = $a['title'];
+			$prio = $a['prio'];
+			$tags = $a['tags'];
 		}
-		$title = $a['title'];
-		$prio = $a['prio'];
-		$tags = $a['tags'];
 	}
 	if($title == '') {
 		jsonExit($t);
@@ -317,7 +327,7 @@ elseif(isset($_GET['suggestTags']))
 		$s .= "$r[0]|$r[1]\n";
 	}
 	echo htmlarray($s);
-	exit; 
+	exit;
 }
 elseif(isset($_GET['setPrio']))
 {
@@ -513,7 +523,7 @@ elseif(isset($_GET['setHideList']))
 	$flag = (int)_post('hide');
 	$bitwise = ($flag == 0) ? 'taskview & ~4' : 'taskview | 4';
 	$db->dq("UPDATE {$db->prefix}lists SET taskview=$bitwise WHERE id=$listId");
-	jsonExit(array('total'=>1));	
+	jsonExit(array('total'=>1));
 }
 
 
@@ -676,6 +686,29 @@ function parse_smartsyntax($title)
 	elseif($a['prio'] > 2) $a['prio'] = 2;
 	return $a;
 }
+function parse_smartsyntax_alternativ($title) {
+	$a = array();
+
+	//Match priority
+	if(preg_match('/^(\+[0-2]|0|-1)\s*(.*)/', $title, $m)) {
+		$a['prio'] = (int)$m[1];
+		$title = $m[2];
+	}else {
+		$a['prio'] = 0;
+	}
+	//Match Tags
+	if(preg_match('/^(.*)((?:#[^#]+\s*)+)$/U', $title, $m)) {
+		//Join tags
+		$a['tags'] = implode(',', preg_split('/\s*#+/', trim($m[2], '#')));
+		$title = $m[1];
+	}else {
+		$a['tags'] = '';
+	}
+	$a['title'] = $title;
+	if($a['prio'] < -1) $a['prio'] = -1;
+	elseif($a['prio'] > 2) $a['prio'] = 2;
+	return $a;
+}
 
 function tag_size($qmin, $q, $step)
 {
@@ -708,9 +741,9 @@ function parse_duedate($s)
 		$d = (int)$ma[1]; $m = (int)$ma[2]; $y = (int)$ma[3];
 	}
 	elseif(preg_match("|^(\d+)\.(\d+)\b|", $s, $ma)) {
-		$d = (int)$ma[1]; $m = (int)$ma[2]; 
+		$d = (int)$ma[1]; $m = (int)$ma[2];
 		$a = explode(',', date('Y,m,d'));
-		if( $m<(int)$a[1] || ($m==(int)$a[1] && $d<(int)$a[2]) ) $y = (int)$a[0]+1; 
+		if( $m<(int)$a[1] || ($m==(int)$a[1] && $d<(int)$a[2]) ) $y = (int)$a[0]+1;
 		else $y = (int)$a[0];
 	}
 	elseif(preg_match("|^(\d+)\/(\d+)\b|", $s, $ma))
@@ -721,7 +754,7 @@ function parse_duedate($s)
 			$m = (int)$ma[1]; $d = (int)$ma[2];
 		}
 		$a = explode(',', date('Y,m,d'));
-		if( $m<(int)$a[1] || ($m==(int)$a[1] && $d<(int)$a[2]) ) $y = (int)$a[0]+1; 
+		if( $m<(int)$a[1] || ($m==(int)$a[1] && $d<(int)$a[2]) ) $y = (int)$a[0]+1;
 		else $y = (int)$a[0];
 	}
 	else return null;
@@ -833,7 +866,7 @@ function moveTask($id, $listId)
 		return false;
 
 	$ow = 1 + (int)$db->sq("SELECT MAX(ow) FROM {$db->prefix}todolist WHERE list_id=? AND compl=?", array($listId, $r['compl']?1:0));
-	
+
 	$db->ex("BEGIN");
 	$db->ex("UPDATE {$db->prefix}tag2task SET list_id=? WHERE task_id=?", array($listId, $id));
 	$db->dq("UPDATE {$db->prefix}todolist SET list_id=?, ow=?, d_edited=? WHERE id=?", array($listId, $ow, time(), $id));
