@@ -214,7 +214,8 @@ header('Content-type:text/html; charset=utf-8');
  <?php echo selectOptions(array('Y-m-d'=>'yyyy-mm-dd ('.date('Y-m-d').')',
        'n/j/y'=>'m/d/yy ('.date('n/j/y').')',
        'd.m.y'=>'dd.mm.yy ('.date('d.m.y').')',
-       'd/m/y'=>'dd/mm/yy ('.date('d/m/y').')', 0=>__('set_custom')), _c('dateformat2'), 0); ?>
+       'd/m/y'=>'dd/mm/yy ('.date('d/m/y').')',
+       'd/m/Y'=>'dd/mm/yyyy ('.date('d/m/Y').')', 0=>__('set_custom')), _c('dateformat2'), 0); ?>
  </select>
 </td></tr>
 
