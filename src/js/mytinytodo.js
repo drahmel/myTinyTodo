@@ -531,7 +531,7 @@ var mytinytodo = window.mytinytodo = _mtt = {
 				// open required or first non-hidden list
 				for(var i=0; i<res.list.length; i++) {
 					if(_mtt.options.openList) {
-						if(_mtt.options.openList == res.list[i].id) {
+						if(_mtt.options.openList == res.list[i].id || _mtt.options.openList == res.list[i].name) {
 							openListId = res.list[i].id;
 							break;
 						}
@@ -548,16 +548,8 @@ var mytinytodo = window.mytinytodo = _mtt = {
 				// or open first if all list are hidden
 				if(!openListId) openListId = res.list[0].id;
 
-                var openListName = false;
-                if(location.hash && location.hash.substr(0, 6) == '#list_') {
-                    openListName = location.hash.substr(6).replace('_', ' ');
-                }
-
 				$.each(res.list, function(i,item){
 					tabLists.add(item);
-                    if(openListName == item.name) {
-                        openListId = item.id;
-                    }
 					ti += '<li id="list_'+item.id+'" class="mtt-tab'+(item.hidden?' mtt-tabs-hidden':'')+'">'+
 						'<a href="#list/'+item.id+'" title="'+item.name+'"><span>'+item.name+'</span>'+
 						'<div class="list-action"></div></a></li>';
@@ -701,6 +693,7 @@ var mytinytodo = window.mytinytodo = _mtt = {
 		{
 			s = a[i];
 			switch(s) {
+                case "listname": p.list = a[++i].replace(/[-_]/g, ' '); break;
 				case "list": if(a[++i].match(/^-?\d+$/)) { p[s] = a[i]; } break;
 				case "alltasks": p.list = '-1'; break;
 			}
@@ -713,9 +706,10 @@ var mytinytodo = window.mytinytodo = _mtt = {
 
 };
 
-function addList()
+function addList(defVal)
 {
-	var r = prompt(_mtt.lang.get('addList'), _mtt.lang.get('addListDefault'));
+    var defVal = defVal || _mtt.lang.get('addListDefault');
+	var r = prompt(_mtt.lang.get('addList'), defVal);
 	if(r == null) return;
 
 	_mtt.db.request('addList', {name:r}, function(json){
