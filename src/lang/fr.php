@@ -116,6 +116,7 @@ class Lang extends DefaultLang
 		'set_newpass_descr' => '(laissez blanc pour ne pas modifier le mot de passe actuel)',
 		'set_smartsyntax' => 'Syntaxe rapide',
 		'set_smartsyntax_descr' => '(/priorité/ tâche /mots-clefs/)',
+		'set_smartsyntax_alternative' => 'Alternatif <small>(priorité tâche #mot-clef #mot-clef)</small>',
 		'set_timezone' => 'Fuseaux horaires',
 		'set_autotag' => 'Mots-clefs automatiques',
 		'set_autotag_descr' => '(ajoute automatiquement les mots-clefs aux nouvelles tâches parmis ceux que vous avez déjà définis)',

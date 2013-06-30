@@ -119,6 +119,7 @@ class Lang extends DefaultLang
 		'set_newpass_descr' => "(leave blank if won't change current password)",
 		'set_smartsyntax' => "Smart syntax",
 		'set_smartsyntax_descr' => "(/priority/ task /tags/)",
+		'set_smartsyntax_alternative' => 'Alternative <small>(prioroty task #tag #tag2)</small>',
 		'set_timezone' => "Time zone",
 		'set_autotag' => "Autotagging",
 		'set_autotag_descr' => "(automatically adds tag of current tag filter to newly created task)",
