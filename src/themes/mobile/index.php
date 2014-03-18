@@ -13,7 +13,7 @@
 </head>
 
 <body>
-
+<link href="<?php mttinfo('template_url'); ?>/images/logo32x32.png" rel="shortcut icon apple-touch-icon" />
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery-ui-1.8.7.custom.min.js"></script>
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>js/jquery/jquery.autocomplete-1.1.js"></script>
@@ -45,28 +45,28 @@ $().ready(function(){
 });
 </script>
 
+
+<div id="bar">
+  <div id="wrapper">
+    <h2><?php mttinfo('title'); ?></h2><div id="loading"></div>
+    <div id="msg"><span class="msg-text"></span><div class="msg-details"></div></div>
+     <div class="bar-menu">
+     <span class="menu-owner" style="display:none">
+       <a href="#settings" id="settings"><?php _e('a_settings');?></a>
+     </span>
+     <span id="bar_auth">
+      <span id="bar_public" style="display:none"><?php _e('public_tasks');?></span>
+      <a href="#login" id="bar_login" class="nodecor"><?php _e('a_login');?> <span class="arrdown"></span></a>
+      <a href="#logout" id="bar_logout"><?php _e('a_logout');?></a>
+     </span>
+    </div>
+  </div>
+</div>
+
+
 <div id="wrapper">
 <div id="container">
 <div id="mtt_body">
-
-<h2><?php mttinfo('title'); ?></h2>
-
-<div id="loading"></div>
-
-<div id="bar">
- <div id="msg"><span class="msg-text"></span><div class="msg-details"></div></div>
- <div class="bar-menu">
- <span class="menu-owner" style="display:none">
-   <a href="#settings" id="settings"><?php _e('a_settings');?></a>
- </span>
- <span class="bar-delim" style="display:none"> | </span>
- <span id="bar_auth">
-  <span id="bar_public" style="display:none"><?php _e('public_tasks');?> |</span>
-  <a href="#login" id="bar_login" class="nodecor"><u><?php _e('a_login');?></u> <span class="arrdown"></span></a>
-  <a href="#logout" id="bar_logout"><?php _e('a_logout');?></a>
- </span>
- </div>
-</div>
 
 <br clear="all" />
 
@@ -154,7 +154,7 @@ $().ready(function(){
 </div>
 <div class="form-row form-row-short">
  <span class="h"><?php _e('due');?> </span>
- <input name="duedate" id="duedate" value="" class="in100" title="Y-M-D, M/D/Y, D.M.Y, M/D, D.M" autocomplete="off" />
+ <input name="duedate" type="text" id="duedate" value="" class="in100" title="Y-M-D, M/D/Y, D.M.Y, M/D, D.M" autocomplete="off" />
 </div>
 <div class="form-row-short-end"></div>
 <div class="form-row"><div class="h"><?php _e('task');?></div> <input type="text" name="task" value="" class="in500" maxlength="250" /></div>
@@ -162,12 +162,11 @@ $().ready(function(){
 <div class="form-row"><div class="h"><?php _e('tags');?></div>
  <table cellspacing="0" cellpadding="0" width="100%"><tr>
   <td><input type="text" name="tags" id="edittags" value="" class="in500" maxlength="250" /></td>
-  <td class="alltags-cell">
-   <a href="#" id="alltags_show"><?php _e('alltags_show');?></a>
-   <a href="#" id="alltags_hide" style="display:none"><?php _e('alltags_hide');?></a></td>
  </tr></table>
 </div>
-<div class="form-row" id="alltags" style="display:none;"><?php _e('alltags');?> <span class="tags-list"></span></div>
+<a href="#" id="alltags_show"><?php _e('alltags_show');?></a>
+<a href="#" id="alltags_hide" style="display:none"><?php _e('alltags_hide');?></a>
+<div class="form-row" id="alltags" style="display:none;"><?php _e('alltags');?><span class="tags-list"></span></div>
 <div class="form-row form-bottom-buttons">
  <input type="submit" value="<?php _e('save');?>" /> 
  <input type="button" id="mtt_edit_cancel" class="mtt-back-button" value="<?php _e('cancel');?>" />
