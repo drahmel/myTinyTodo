@@ -1,8 +1,7 @@
-body { margin:0px; font-size:100%; }
-h2 { margin:0; margin-bottom:2px; font-size:1em; }
+body { padding:0px; font-size:100%; }
+/*h2 { margin:0; margin-bottom:2px; font-size:1em; }*/
 h3 { margin-bottom:4px; padding:4px 0; }
-#body { margin-left:1px; margin-right:1px; padding:1px; padding-bottom:12px;}
-#bar_login, #bar_logout { padding-right:1px; }
+#wrapper{padding: 0 10px;}
 
 #tabs ul { margin-top:0px; }
 #tabs ul li { width:70px; margin-right: 1px; }

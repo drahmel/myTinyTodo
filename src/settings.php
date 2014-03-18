@@ -2,8 +2,8 @@
 
 /*
 	This file is part of myTinyTodo.
-	(C) Copyright 2009-2010 Max Pozdeev <maxpozdeev@gmail.com>
-	Licensed under the GNU GPL v3 license. See file COPYRIGHT for details.
+	(C) Copyright 2009-2011 Max Pozdeev <maxpozdeev@gmail.com>
+	Licensed under the GNU GPL v2 license. See file COPYRIGHT for details.
 */
 
 require_once('./init.php');
@@ -22,6 +22,14 @@ if(isset($_POST['save']))
 	$langs = getLangs();
 	Config::$params['lang']['options'] = array_keys($langs);
 	Config::set('lang', _post('lang'));
+	
+	// in Demo mode we can set only language by cookies
+	if(defined('MTTDEMO')) {
+		setcookie('lang', Config::get('lang'), 0, url_dir(Config::get('url')=='' ? $_SERVER['REQUEST_URI'] : Config::get('url')));
+		$t['saved'] = 1;
+		jsonExit($t);
+	}
+	
 	if(isset($_POST['password']) && $_POST['password'] != '') Config::set('password', $_POST['password']);
 	elseif(!_post('allowpassword')) Config::set('password', '');
 	Config::set('smartsyntax', (int)_post('smartsyntax'));
@@ -143,7 +151,7 @@ header('Content-type:text/html; charset=utf-8');
 
 <tr>
 <th><?php _e('set_title');?>:<br/><span class="descr"><?php _e('set_title_descr');?></span></th>
-<td> <input name="title" value="<?php echo htmlspecialchars(_c('title'));?>" class="in350" /> </td>
+<td> <input name="title" type="text" value="<?php echo htmlspecialchars(_c('title'));?>" class="in350" /> </td>
 </tr>
 
 <tr>
@@ -200,7 +208,7 @@ header('Content-type:text/html; charset=utf-8');
 <tr>
 <th><?php _e('set_date');?>:</th>
 <td>
- <input name="dateformat" value="<?php echo htmlspecialchars(_c('dateformat'));?>" />
+ <input name="dateformat" type="text" value="<?php echo htmlspecialchars(_c('dateformat'));?>" />
  <select onchange="if(this.value!=0) this.form.dateformat.value=this.value;">
  <?php echo selectOptions(array('F j, Y'=>formatTime('F j, Y'), 'M d, Y'=>formatTime('M d, Y'), 'j M Y'=>formatTime('j M Y'), 'd F Y'=>formatTime('d F Y'),
 	'n/j/Y'=>formatTime('n/j/Y'), 'd.m.Y'=>formatTime('d.m.Y'), 'j. F Y'=>formatTime('j. F Y'), 0=>__('set_custom')), _c('dateformat'), 0); ?>
@@ -210,7 +218,7 @@ header('Content-type:text/html; charset=utf-8');
 <tr>
 <th><?php _e('set_date2');?>:</th>
 <td>
- <input name="dateformat2" value="<?php echo htmlspecialchars(_c('dateformat2'));?>" />
+ <input name="dateformat2" type="text" value="<?php echo htmlspecialchars(_c('dateformat2'));?>" />
  <select onchange="if(this.value!=0) this.form.dateformat2.value=this.value;">
  <?php echo selectOptions(array('Y-m-d'=>'yyyy-mm-dd ('.date('Y-m-d').')',
        'n/j/y'=>'m/d/yy ('.date('n/j/y').')',
@@ -223,7 +231,7 @@ header('Content-type:text/html; charset=utf-8');
 <tr>
 <th><?php _e('set_shortdate');?>:</th>
 <td>
- <input name="dateformatshort" value="<?php echo htmlspecialchars(_c('dateformatshort'));?>" />
+ <input name="dateformatshort" type="text" value="<?php echo htmlspecialchars(_c('dateformatshort'));?>" />
  <select onchange="if(this.value!=0) this.form.dateformatshort.value=this.value;">
  <?php echo selectOptions(array('M d'=>formatTime('M d'), 'j M'=>formatTime('j M'), 'n/j'=>formatTime('n/j'), 'd.m'=>formatTime('d.m'), 0=>__('set_custom')), _c('dateformatshort'), 0); ?>
  </select>
