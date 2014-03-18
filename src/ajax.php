@@ -3,8 +3,8 @@
 /*
 	This file is part of myTinyTodo.
 	(C) Copyright 2009-2010 Max Pozdeev <maxpozdeev@gmail.com>
-	Licensed under the GNU GPL v3 license. See file COPYRIGHT for details.
-*/
+	Licensed under the GNU GPL v2 license. See file COPYRIGHT for details.
+*/ 
 
 set_error_handler('myErrorHandler');
 set_exception_handler('myExceptionHandler');
@@ -831,11 +831,16 @@ function myErrorHandler($errno, $errstr, $errfile, $errline)
 
 function myExceptionHandler($e)
 {
-	if(-1 == $e->getCode()) {
-		echo $e->getMessage()."\n". $e->getTraceAsString();
-		exit;
+	try { // to avoid Exception thrown without a stack frame
+		if(-1 == $e->getCode()) {
+			echo $e->getMessage()."\n". $e->getTraceAsString();
+			exit;
+		}
+		echo 'Exception: \''. $e->getMessage() .'\' in '. $e->getFile() .':'. $e->getLine(); //."\n". $e->getTraceAsString();
 	}
-	echo 'Exception: \''. $e->getMessage() .'\' in '. $e->getFile() .':'. $e->getLine(); //."\n". $e->getTraceAsString();
+	catch(Exception $e) {
+		echo 'Exception in ExceptionHandler: \''. $e->getMessage() .'\' in '. $e->getFile() .':'. $e->getLine();
+	}
 	exit;
 }
 
